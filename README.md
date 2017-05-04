@@ -1,4 +1,4 @@
-### Functionality
+### Planned Functionality
 
 - PHP Features
   - PSR-4 Namespacing: https://mattstauffer.co/blog/a-brief-introduction-to-php-namespacing
