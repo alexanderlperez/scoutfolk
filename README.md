@@ -1,3 +1,12 @@
+### Running the project
+
+1. get ngrok running with fb messenger account: 
+    https://medium.com/@Oskarr3/developing-messenger-bot-with-ngrok-5d23208ed7c8
+    https://developers.facebook.com/docs/messenger-platform/guides/quick-start
+2. get fb messenger credentials into .env file (can copy `env_example` file)
+3. run the app using the PHP Built-In Server
+4. nav to the FB page and start with a "hi"
+
 ### Planned Functionality
 
 - PHP Features
