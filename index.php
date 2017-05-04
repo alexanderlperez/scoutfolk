@@ -14,9 +14,11 @@ use ScoutFolk\Strategies\PostbackExtractor;
 use ScoutFolk\Strategies\LocationExtractor;
 
 use pimax\FbBotApp;
+use pimax\Messages\ImageMessage;
 use pimax\Messages\Message;
 use pimax\Messages\QuickReply;
 use pimax\Messages\QuickReplyButton;
+use pimax\Messages\SenderAction;
 
 $dotenv = new Dotenv();
 $dotenv->load(__DIR__ . '/.env');
@@ -76,7 +78,7 @@ function errorDialog($bot, $text, $userId) {
     $bot->send(new Message($userId, "Hmmm, I'm not sure I get \"" . $text . "\""));
 }
 
-function makeMapRenderingResponse() {
+function makeMapRenderingResponse($bot, $userId) {
     $bot->send(new Message($userId, "This is great! I'm going map out your route to AnalogFolks HQ..."));
     $bot->send(new SenderAction($userId, SenderAction::ACTION_TYPING_ON));
 
@@ -86,6 +88,7 @@ function makeMapRenderingResponse() {
     $mapImage = "https://maps.googleapis.com/maps/api/staticmap?center=Minsk&zoom=6&size=600x400&maptype=roadmap&path=enc%3AohqfIc_jpCkE%7DCx@mJdDa[bD%7BM%7D@e@_MgKiQuVOoFlF%7DVnCnBn@aDxCwNoD%7DHl@%7DNkByE%5Eqt@vFm|@dMkcBrQmv@lK%7Bu@~N_cBdWshEp_@%7DjGpHw_@rg@k_B|dB%7DmFvm@ulBdb@ulBxq@muCpoAggHxy@ygFbA_]aAawA%5CecAzGkx@nUuxA|D%7Bt@aBoeAwKwaAqG%7B%5CeBc_@p@aZx%60@gcGpNg|BGmWa%5CgpFyZolF%7BFgcDyPy|EoK_%7BAwm@%7BqFqZaiBoNsqCuNq%7BHk%60@crG%7B]qkBul@guC%7BJ%7D]aNo%7B@k%5EqfBkb@kfCsLc_@m|Ae~Cee@aaAcMqWsc@kjAwZsj@a%5E%7Dn@sSwk@u~@qhEkrBeiJsVkgAcGoNq_BetDkk@oqAqRcl@w%5CmmA%7BJs%5CoM%7DSga@on@qf@yu@wwAyxBkoAooBi%7B@utA%7Dp@eoAyl@ogAan@ei@uHyOiS_v@%7D%7DAeyFc%5CelAoJ_i@gBad@dA_a@f]i%60Evp@e_IrYmcDxJiyAjD%7BdBrCcnH|AqyEoIefBwJuw@eKoi@%7Bf@eeBoRagA%7BEsw@q@%7DgAnNcnCtIwoBdBitA_Cyo@me@%7DhEyMws@ie@qyAaaAspBqz@ceBaPq%5EeMcc@%7BI%7Bg@sGg%7B@%5CyqBlF%7BrEjAyzCuHa|@sKaf@oNg%60@y]_j@kc@wq@oSqr@oJys@kf@uxIOk%7B@tFuhAbEwl@pOklAvk@%7DgEjBo%5EwEgt@_l@scCoLio@iDyb@q@_z@%60N%7BkDNwr@wBsb@%7BHmn@yNibAsJyq@eOu_C%7DJocAqN_n@%7D[yu@c%5Eah@sgBqkCoOk%60@%7DMmm@mq@qzEumBmwK%7DUw~BmKktBuJobBsNwdAgZgzA_Nsf@%7B%7B@wwCcTqZqn@uq@kJ%7DOmG%7BT%7BMsx@cOaxCwH_g@ufCisFikBedEkLoh@q@eWdB%7B]bSeu@vxByyGbKqp@%60HchClG%7D%7BEcKejDgRkeHaGylAkHex@oWcjBaGmaAMevBtF%7DfAtMceA%60Se_AhUmaAb|AkyGjf@_uBvx@gaDl%7BBihIlY%7DjApGmk@%60XkiDbNaiBnA%7Bp@xAs~AfJk%7D@fH%7De@pJy%5EdZoj@|T%7B%60@~Rgu@tWahAdGkOxW%7BV%60_@qXjLgNbKoQzf@%7DhAfZeq@jWw%7B@lVodAnOgy@jh@mrItGc%60AtF_b@lBss@yZwgDsKyvC|CqkAvFqt@dg@qhDxLkv@vB_]_Aw%60@uMkrBcHuwAbFok@rM__AzEioAlCmoB_Dat@wK_dDoEigB|CcQbEqM~Bk%5ClEg_ApEg_AxAg%5CxJyZzNqc@gCyMuEoMsJ%7BYiBgF";
 
     $bot->send(new ImageMessage($userId, $mapImage));
+    $bot->send(new Message($userId, "... Feeling hungry yet?"));
 }
 
 /*************************
@@ -113,7 +116,7 @@ if ($hasMessage) {
             makeDecisionTreeDialogResponse($bot, $strategy->extract(), $message->sender->id);
         } else if ($isLocation) {
             $strategy = new LocationExtractor($message);
-            makeMapRenderingResponse($strategy->extract(), $message->sender->id);
+            makeMapRenderingResponse($bot, $message->sender->id);
         } else if ($isPostback) {
             $strategy = new PostbackExtractor($message);
             //TODO: is this even used?
