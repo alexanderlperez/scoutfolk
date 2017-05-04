@@ -6,9 +6,12 @@
  */
 
 require_once(dirname(__FILE__) . '/vendor/autoload.php');
-require_once('./includes/helpers.php');
 
 use Symfony\Component\Dotenv\Dotenv;
+use ScoutFolk\Strategies\UserMessageExtractor;
+use ScoutFolk\Strategies\PostbackExtractor;
+use ScoutFolk\Strategies\LocationExtractor;
+use ScoutFolk\Controllers\MessageHandler;
 
 $dotenv = new Dotenv();
 $dotenv->load(__DIR__ . '/.env');
@@ -19,58 +22,6 @@ $token = getenv('ACCESS_TOKEN');
 /**************
 *  Bot init  *
 **************/
-
-interface IMessageExtractionStrategy {
-    public function extract();
-}
-
-class UserMessageExtractor implements IMessageExtractionStrategy {
-    private $message;
-
-    public function __construct($message) {
-        $this->message = $message;
-    }
-
-    public function extract() {
-        return $this->message->message->text;
-    }
-}
-
-class PostbackExtractor implements IMessageExtractionStrategy {
-    private $message;
-
-    public function __construct($message) {
-        $this->message = $message;
-    }
-
-    public function extract() {
-        return $this->message->postback->payload;
-    }
-}
-
-class LocationExtractor implements IMessageExtractionStrategy {
-    private $message;
-
-    public function __construct($message) {
-        $this->message = $message;
-    }
-
-    public function extract() {
-        return $this->message->message->attachments[0]->payload->coordinates;
-    }
-}
-
-class MessageHandler {
-    private $extractionStrategy;
-
-    public function __construct(IMessageExtractionStrategy $extractionStrategy) {
-        $this->extractionStrategy = $extractionStrategy;
-    }
-
-    public function handle() {
-        return $this->extractionStrategy->extract();
-    }
-}
 
 // Handle token verification
 
@@ -113,11 +64,11 @@ if ($hasMessage) {
         }
 
         if (!isset($strategy)) {
+            error_log('Unkown message type');
             die('Unkown message type');
         }
 
-        $handler = new MessageHandler($strategy);
-        var_error_log($handler->handle());
+        var_error_log($strategy->extract());
     }
 }
 

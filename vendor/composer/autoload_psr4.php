@@ -8,4 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     'pimax\\' => array($vendorDir . '/pimax/fb-messenger-php'),
     'Symfony\\Component\\Dotenv\\' => array($vendorDir . '/symfony/dotenv'),
+    'ScoutFolk\\' => array($baseDir . '/src'),
 );
