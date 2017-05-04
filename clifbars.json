@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Chocolate Chip Peanut Crunch",
+        "calories": 260,
+        "img": "chocolate-chip-peanut-crunch.png"
+    },
+    {
+        "name": "Chocolate Chip",
+        "calories": 100,
+        "img": "chocolate-chip.png"
+    },
+    {
+        "name": "Crunchy Peanut Butter",
+        "calories": 260,
+        "img": "crunchy-peanut-butter.png"
+    },
+    {
+        "name": "Oatmeal Raisin Walnut",
+        "calories": 250,
+        "img": "oatmeal-raisin-walnut.png"
+    }
+]
